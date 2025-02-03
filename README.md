@@ -1,73 +1,73 @@
-# Security
+# Security with Email Verification 🚀🔒
 
+## Описание 📝
 
-```markdown
-# Security with Email Verification
+Этот проект реализует систему аутентификации и регистрации пользователей с проверкой электронной почты. 📧
+После регистрации пользователю отправляется письмо с подтверждением, которое необходимо для активации учетной записи. ✅
 
-This project demonstrates the implementation of email verification and security mechanisms in a Spring Boot application. It includes user registration, authentication with JWT, email verification, and secure password storage.
+## Стек технологий 🛠️
 
-## Features
-- User registration with email verification
-- Secure password storage using bcrypt
-- JWT-based authentication
-- Password reset functionality
-- Email service integration
+- **Backend**: Java ☕, Spring Boot 6, Spring Security, JWT, PostgreSQL 🐘
+- **Frontend**: (Ожидается разработка) 🎨
+- **Контейнеризация**: Docker 🐳, Docker Compose
 
-## Technologies
-- Spring Boot
-- Spring Security
-- JWT (JSON Web Token)
-- Spring Mail
-- MySQL/PostgreSQL (or any preferred database)
+## Функциональность 🎯
 
-## Setup
+- ✅ Регистрация пользователей с валидацией данных
+- 📩 Подтверждение email через ссылку в письме
+- 🔐 Аутентификация и авторизация с JWT
+- 🔄 Восстановление пароля через email
+- 🏷️ Роли пользователей (USER, ADMIN)
+- 🔒 Защищенные API-эндпоинты
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Yersdev/Security-with-Email-VErification.git
-   ```
+## Установка и запуск 🚀
 
-2. Configure the `.env` file with your environment variables:
-    - `SPRING_DATASOURCE_URL`
-    - `SPRING_DATASOURCE_USERNAME`
-    - `SPRING_DATASOURCE_PASSWORD`
-    - `MAIL_HOST`
-    - `MAIL_PORT`
-    - `MAIL_USERNAME`
-    - `MAIL_PASSWORD`
-    - `JWT_SECRET_KEY`
+### 1. Клонирование репозитория 💾
 
-3. Install dependencies:
-   ```bash
-   mvn install
-   ```
-
-4. Run the application:
-   ```bash
-   mvn spring-boot:run
-   ```
-
-## API Endpoints
-
-### Register User
-- **POST** `/api/auth/register`
-- Request Body: `{ "email": "user@example.com", "password": "yourpassword", "name": "User" }`
-
-### Login User
-- **POST** `/api/auth/login`
-- Request Body: `{ "email": "user@example.com", "password": "yourpassword" }`
-
-### Verify Email
-- **GET** `/api/auth/verify-email/{token}`
-
-### Password Reset
-- **POST** `/api/auth/reset-password`
-
-## Contributing
-Feel free to fork and submit pull requests.
-
-## License
-MIT License
+```sh
+git clone https://github.com/Yersdev/Security-with-Email-VErification.git
+cd Security-with-Email-VErification
 ```
 
-You can copy and paste this code into your project’s `README.md` file.
+### 2. Настройка переменных окружения ⚙️
+
+Создайте файл `.env` в корне проекта и укажите необходимые переменные:
+
+```
+SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/security_db
+SPRING_DATASOURCE_USERNAME=your_username
+SPRING_DATASOURCE_PASSWORD=your_password
+JWT_SECRET=your_jwt_secret
+EMAIL_HOST=smtp.example.com
+EMAIL_PORT=587
+EMAIL_USERNAME=your_email@example.com
+EMAIL_PASSWORD=your_email_password
+```
+
+### 3. Запуск проекта в Docker 🐳
+
+#### Запуск backend 🎯
+
+```sh
+docker-compose up -d --build
+```
+
+#### Запуск frontend (после его разработки) 🎨
+
+```sh
+cd frontend
+npm install
+npm run dev
+```
+
+## API 📌
+
+Документация API доступна в Swagger по адресу:
+
+```
+http://localhost:8080/swagger-ui.html
+```
+
+## Контакты 📧
+
+Автор: [Yersdev](https://github.com/Yersdev)
