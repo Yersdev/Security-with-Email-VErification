@@ -18,22 +18,39 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
-
+/**
+ * Фильтр аутентификации JWT, который выполняется один раз за запрос.
+ * Отвечает за проверку JWT-токена, извлечение пользователя
+ * и установку аутентификации в контексте безопасности Spring.
+ */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final HandlerExceptionResolver handlerExceptionResolver;
-
     private final JwtService jwtService;
-
     private final UserDetailsService userDetailsService;
 
-
-    public JwtAuthenticationFilter (HandlerExceptionResolver handlerExceptionResolver, JwtService jwtService, UserDetailsService userDetailsService) {
+    /**
+     * Конструктор фильтра аутентификации JWT.
+     *
+     * @param handlerExceptionResolver обработчик исключений
+     * @param jwtService сервис для работы с JWT
+     * @param userDetailsService сервис для загрузки данных пользователя
+     */
+    public JwtAuthenticationFilter(HandlerExceptionResolver handlerExceptionResolver, JwtService jwtService, UserDetailsService userDetailsService) {
         this.handlerExceptionResolver = handlerExceptionResolver;
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Выполняет фильтрацию входящего HTTP-запроса, проверяя наличие и валидность JWT-токена.
+     *
+     * @param request HTTP-запрос
+     * @param response HTTP-ответ
+     * @param filterChain цепочка фильтров
+     * @throws ServletException если возникает ошибка в фильтрации
+     * @throws IOException если возникает ошибка ввода-вывода
+     */
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -41,7 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -67,9 +83,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
-
             }
-
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {

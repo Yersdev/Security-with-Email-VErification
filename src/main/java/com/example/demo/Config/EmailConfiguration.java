@@ -7,12 +7,22 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+/**
+ * Конфигурационный класс для настройки отправки электронной почты через SMTP.
+ */
 public class EmailConfiguration {
+
     @Value("${spring.mail.username}")
     private String email;
+
     @Value("${spring.mail.password}")
     private String password;
 
+    /**
+     * Создает и настраивает {@link JavaMailSender} для отправки писем через SMTP-сервер Gmail.
+     *
+     * @return сконфигурированный экземпляр {@link JavaMailSender}
+     */
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

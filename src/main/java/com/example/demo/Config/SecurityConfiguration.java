@@ -15,20 +15,37 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Конфигурационный класс безопасности Spring Security.
+ * Определяет правила аутентификации, авторизации, CORS и JWT-фильтрации.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    /**
+     * Конструктор для настройки компонентов безопасности.
+     *
+     * @param jwtAuthenticationFilter фильтр JWT-аутентификации
+     * @param authenticationProvider  провайдер аутентификации
+     */
     public SecurityConfiguration(
             JwtAuthenticationFilter jwtAuthenticationFilter,
-            AuthenticationProvider authenticationProvider //ignore Bean warning we will get to that
+            AuthenticationProvider authenticationProvider
     ) {
         this.authenticationProvider = authenticationProvider;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+    /**
+     * Настраивает цепочку фильтров безопасности.
+     *
+     * @param http объект конфигурации безопасности HTTP
+     * @return сконфигурированная цепочка фильтров
+     * @throws Exception если возникнут ошибки конфигурации
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -46,6 +63,11 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    /**
+     * Настраивает политику CORS (Cross-Origin Resource Sharing).
+     *
+     * @return объект конфигурации CORS
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

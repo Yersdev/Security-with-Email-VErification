@@ -12,29 +12,69 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Класс модели пользователя, реализующий интерфейс {@link UserDetails}
+ * для интеграции с Spring Security.
+ */
 @Entity
 @Table(name="users")
 @Getter
-
 @NoArgsConstructor
 @Setter
 public class Users implements UserDetails {
+    /**
+     * Уникальный идентификатор пользователя.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Имя пользователя (уникальное, обязательное).
+     */
     @Column(unique=true, nullable=false)
     private String username;
+
+    /**
+     * Email пользователя (уникальный, обязательный).
+     */
     @Column(unique=true, nullable=false)
     private String email;
+
+    /**
+     * Пароль пользователя (обязательный).
+     */
     @Column(name = "password", nullable=false)
     private String password;
+
+    /**
+     * Флаг, указывающий, активирован ли пользователь.
+     */
     private boolean enabled;
+
+    /**
+     * Код верификации для подтверждения email.
+     */
     @Column(name = "verification_code")
     private String verificationCode;
+
+    /**
+     * Дата и время истечения срока действия кода верификации.
+     */
     @Column(name = "verification_expiration")
     private LocalDateTime verificationExpireAt;
 
+    /**
+     * Конструктор с параметрами.
+     *
+     * @param id                 идентификатор пользователя
+     * @param username           имя пользователя
+     * @param email              email пользователя
+     * @param password           пароль пользователя
+     * @param enabled            статус активации
+     * @param verificationCode   код верификации
+     * @param verificationExpireAt время истечения кода верификации
+     */
     public Users(Long id, String username, String email, String password, boolean enabled, String verificationCode, LocalDateTime verificationExpireAt) {
         this.id = id;
         this.username = username;
@@ -45,12 +85,24 @@ public class Users implements UserDetails {
         this.verificationExpireAt = verificationExpireAt;
     }
 
+    /**
+     * Конструктор для создания пользователя с минимальными параметрами.
+     *
+     * @param password пароль пользователя
+     * @param email    email пользователя
+     * @param username имя пользователя
+     */
     public Users(String password, String email, String username) {
         this.password = password;
         this.email = email;
         this.username = username;
     }
 
+    /**
+     * Возвращает список полномочий пользователя.
+     *
+     * @return пустой список (пользователь не имеет ролей)
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -65,21 +117,25 @@ public class Users implements UserDetails {
     public String getUsername() {
         return username;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     public Long getId() {
